@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-o",
+      "build/cerraria",
+      "src/main.cpp"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/src/main.cpp",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  }
+]
