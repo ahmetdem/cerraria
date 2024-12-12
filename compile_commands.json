@@ -4,14 +4,15 @@
       "/usr/bin/g++",
       "-c",
       "-std=c++23",
+      "-Wall",
       "-Iinc",
       "-Ideps/raylib/src",
       "-o",
       "build/cerraria",
-      "src/main.cpp"
+      "src/ball.cc"
     ],
     "directory": "/home/ahmetdem/Github/cerraria",
-    "file": "/home/ahmetdem/Github/cerraria/src/main.cpp",
+    "file": "/home/ahmetdem/Github/cerraria/src/ball.cc",
     "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
-  }
+  },
 ]

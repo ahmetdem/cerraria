@@ -1,18 +1,53 @@
+#include "camera.h"
+#include "game.h"
 #include "raylib.h"
+#include "rlgl.h"
+#include <ctime>
 
-int main() {
-    // Initialize window
-    InitWindow(800, 600, "Hello, Raylib!");
-    SetTargetFPS(60);
+#define SCREEN_WIDTH 1600
+#define SCREEN_HEIGHT 900
 
-    // Main game loop
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Hello!", 190, 200, 20, LIGHTGRAY);
-        EndDrawing();
-    }
+void UpdateGame(Game &);
+void RenderGame(Game &);
 
-    CloseWindow(); // Close window and clean up resources
-    return 0;
+int main(void) {
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CERRARIA");
+  SetTargetFPS(60);
+
+  srand(time(0));
+
+  Game Game;
+  InitGameState(Game);
+
+  while (!WindowShouldClose()) {
+    Game.dt = GetFrameTime();
+
+    UpdateGame(Game);
+    RenderGame(Game);
+  }
+
+  CloseWindow();
+  return 0;
+}
+
+void UpdateGame(Game &game) {
+  HandleCamMove(game.cam);
+  HandleCamZoom(game.cam);
+  HandleCamLimit(game.cam);
+}
+
+void RenderGame(Game &game) {
+  BeginDrawing();
+  ClearBackground(RAYWHITE);
+  DrawFPS(SCREEN_WIDTH - 100, 20);
+
+  BeginMode2D(game.cam);
+
+  DrawTheGrid(game.grid);
+  DrawCircle(GetScreenWidth() / 2, GetScreenHeight() / 2, 50, MAROON);
+
+  EndMode2D();
+
+  DrawCamDebug(game.cam);
+  EndDrawing();
 }

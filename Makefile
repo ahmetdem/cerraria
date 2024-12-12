@@ -1,8 +1,8 @@
 # Project Configuration
 PROJECT_NAME = cerraria
 CXX = g++
-CXXFLAGS = -std=c++23 -Iinc -Ideps/raylib/src
-LDFLAGS = -lraylib -lpthread -ldl
+CXXFLAGS = -std=c++23 -Wall -Iinc -Ideps/raylib/src
+LDFLAGS = -lraylib -lpthread -ldl -lm
 
 # Directories
 SRC_DIR = src
@@ -21,9 +21,9 @@ SOURCES = $(wildcard $(SRC_DIR)/**/*.cc) $(wildcard $(SRC_DIR)/*.cc)
 TARGET = $(BUILD_DIR)/$(PROJECT_NAME)
 
 # Rules
-.PHONY: all clean fetch_raylib
+.PHONY: all clean fetch_raylib run
 
-all: fetch_raylib $(TARGET)
+all: fetch_raylib $(TARGET) run
 
 $(TARGET): $(SOURCES)
 	@mkdir -p $(BUILD_DIR)
