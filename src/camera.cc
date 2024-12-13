@@ -38,17 +38,43 @@ void HandleCamLimit(Camera2D &cam) {
   cam.target.y = Clamp(cam.target.y, minY, maxY);
 }
 
-void DrawCamDebug(Camera2D &cam) {
+void DrawCamDebug(Game& game) {
   Vector2 topLeft = (Vector2){10, 10};
-  Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), cam);
 
+  // Display grid position on screen
   DrawTextEx(GetFontDefault(),
-             TextFormat("World Position: [%.2f, %.2f]", mouseWorldPos.x,
-                        mouseWorldPos.y),
-             topLeft, 20, 2, BLACK);
+             TextFormat("Grid Position: [%i, %i]", game.gridPos.x, game.gridPos.y),
+             Vector2Add(topLeft, (Vector2){10, 0}), 20, 2, DARKGREEN);
 
-  DrawCircleV(GetMousePosition(), 4, DARKGRAY);
+  // Display world position
+  DrawTextEx(GetFontDefault(),
+             TextFormat("World Position: [%.2f, %.2f]", game.mouseWorldPos.x,
+                        game.mouseWorldPos.y),
+             Vector2Add(topLeft, (Vector2){10, 30}), 20, 2, BLACK);
+
+  // Display screen position
   DrawTextEx(GetFontDefault(),
              TextFormat("Screen Position: [%i, %i]", GetMouseX(), GetMouseY()),
-             (Vector2){topLeft.x, topLeft.y + 30}, 20, 2, BLACK);
+             Vector2Add(topLeft, (Vector2){10, 60}), 20, 2, BLACK);
+
+  // Draw the mouse position marker
+  DrawCircleV(GetMousePosition(), 4, DARKGRAY);
+}
+
+void UpdateMousePos(Game &game) {
+  game.mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), game.cam);
+
+  game.gridPos.x = static_cast<int>(std::floor(
+                       (game.mouseWorldPos.x + (float)TILE_SIZE / 2) / TILE_SIZE)) +
+                   row_tile_count / 2;
+  game.gridPos.y =
+      static_cast<int>(game.mouseWorldPos.y / TILE_SIZE) + col_tile_count / 2 - 1;
+
+  if (game.mouseWorldPos.x < (float)-GAME_WIDTH / 2 ||
+      game.mouseWorldPos.x > (float)GAME_WIDTH / 2 ||
+      game.mouseWorldPos.y < (float)-GAME_HEIGHT / 2 ||
+      game.mouseWorldPos.y > (float)GAME_HEIGHT / 2) {
+    game.gridPos.x = -1;
+    game.gridPos.y = -1;
+  }
 }

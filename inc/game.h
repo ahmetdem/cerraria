@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "raylib.h"
+#include "util.h"
 #include <array>
 #include <cstdint>
 
@@ -16,6 +17,8 @@ using std::array;
 using Grid = array<array<int8_t, 100>, 200>; 
 
 struct Game {
+  Vector2 mouseWorldPos;
+  Vector2Int gridPos = {-1, -1};
   float dt = 0.0f;
   Camera2D cam = {};
   Grid grid {};

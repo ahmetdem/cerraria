@@ -2,6 +2,7 @@
 #include "game.h"
 #include "raylib.h"
 #include "rlgl.h"
+#include <random>
 #include <ctime>
 
 #define SCREEN_WIDTH 1600
@@ -48,6 +49,8 @@ void RenderGame(Game &game) {
 
   EndMode2D();
 
-  DrawCamDebug(game.cam);
+  UpdateMousePos(game);
+  DrawCamDebug(game);
+
   EndDrawing();
 }
