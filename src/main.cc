@@ -2,7 +2,6 @@
 #include "game.h"
 #include "raylib.h"
 #include "rlgl.h"
-#include <random>
 #include <ctime>
 
 #define SCREEN_WIDTH 1600
@@ -14,6 +13,8 @@ void RenderGame(Game &);
 int main(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CERRARIA");
   SetTargetFPS(60);
+
+  LoadTextures();
 
   srand(time(0));
 
@@ -27,6 +28,7 @@ int main(void) {
     RenderGame(Game);
   }
 
+  UnloadAllTextures();
   CloseWindow();
   return 0;
 }
@@ -40,15 +42,17 @@ void UpdateGame(Game &game) {
 void RenderGame(Game &game) {
   BeginDrawing();
   ClearBackground(RAYWHITE);
-  DrawFPS(SCREEN_WIDTH - 100, 20);
 
-  BeginMode2D(game.cam);
+  BeginMode2D(game.cam); // Begin 2d Mode
 
-  DrawTheGrid(game.grid);
+  DrawGrid(game.grid);
+  DrawGameWorld(game.grid);
+
   DrawCircle(GetScreenWidth() / 2, GetScreenHeight() / 2, 50, MAROON);
 
-  EndMode2D();
+  EndMode2D(); // End 2d Mode
 
+  DrawFPS(SCREEN_WIDTH - 100, 20);
   UpdateMousePos(game);
   DrawCamDebug(game);
 

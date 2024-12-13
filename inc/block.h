@@ -1,20 +1,23 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <tuple>
+#include "raylib.h"
+#include "util.h"
 
-enum BlockType {
-  DIRT,
-  STONE,
-  IRON,
-};
+#define MAX_TEXTURES 256
+
+enum TileType { TILE_DIAMOND, TILE_DIRT, TILE_STONE, TILE_EMPTY, TILE_COUNT };
 
 struct Block {
-  BlockType type;
-  std::tuple<int, int> place;
-  // Any other stuff goes here
+  TileType type;
+
+  Block(TileType t = TILE_EMPTY, int power = 0) : type(t) {};
 };
 
+bool LoadTextures();
+Texture2D GetTextureByType(TileType type);
+void UnloadAllTextures();
 
+void DrawBlock(const Block &, Vector2Int &);
 
 #endif // BLOCK_H
