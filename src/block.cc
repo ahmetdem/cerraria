@@ -1,7 +1,6 @@
 #include "block.h"
 #include "game.h"
 #include "util.h"
-#include <unordered_map>
 
 std::array<Texture2D, MAX_TEXTURES> textures;
 
@@ -22,31 +21,32 @@ bool LoadTextures() {
 }
 
 Texture2D GetTextureByType(TileType type) {
-    if (type < 0 || type >= TILE_COUNT) {
-        TraceLog(LOG_WARNING, "Invalid TileType: %d", type);
-        return Texture2D{}; // Return empty texture
-    }
-    return textures[type];
+  if (type < 0 || type >= TILE_COUNT) {
+    TraceLog(LOG_WARNING, "Invalid TileType: %d", type);
+    return Texture2D{}; // Return empty texture
+  }
+  return textures[type];
 }
 
 void UnloadAllTextures() {
-    for (Texture2D &texture : textures) {
-        if (texture.id != 0) {
-            UnloadTexture(texture);
-        }
+  for (Texture2D &texture : textures) {
+    if (texture.id != 0) {
+      UnloadTexture(texture);
     }
+  }
 }
 
-void DrawBlock(const Block &block, Vector2Int &gridPos) {
+void DrawBlock(const Block &block, const Vector2Int &gridPos,
+               const GridInfo &gridInfo) {
   Texture2D texture = GetTextureByType(block.type);
   if (texture.id == 0) {
     return;
   }
 
-  Vector2 worldPos = GridToWorldPos(gridPos);
+  Vector2 worldPos = GridToWorldPos(gridPos, gridInfo);
 
   Rectangle sourceRect = {0, 0, (float)texture.width, (float)texture.height};
-  Rectangle destRect = {worldPos.x, worldPos.y, (float)TILE_SIZE,
+  Rectangle destRect = {(float)worldPos.x, (float)worldPos.y, (float)TILE_SIZE,
                         (float)TILE_SIZE};
   Vector2 origin = {0.0f, 0.0f};
 

@@ -2,13 +2,22 @@
 #include "block.h"
 #include "raylib.h"
 
-Vector2 GridToWorldPos(const Vector2Int &gridPos) {
-  Vector2 worldPos;
+void InitGridInfo(GridInfo &gridInfo) {
+    gridInfo.centerX = ROW_TILE_COUNT / 2;
+    gridInfo.centerY = COL_TILE_COUNT / 2;
 
-  worldPos.x = (gridPos.x - ROW_TILE_COUNT / 2 - 1) * TILE_SIZE + 50;
-  worldPos.y = (gridPos.y - COL_TILE_COUNT / 2) * TILE_SIZE;
+    // Precompute offsets for odd/even grid sizes
+    gridInfo.xOffset = (ROW_TILE_COUNT % 2 == 0) ? 0 : TILE_SIZE / 2 - TILE_SIZE;
+    gridInfo.yOffset = (COL_TILE_COUNT % 2 == 0) ? 0 : TILE_SIZE / 2 - TILE_SIZE;
+}
 
-  return worldPos;
+Vector2 GridToWorldPos(const Vector2Int &gridPos, const GridInfo &gridInfo) {
+    Vector2 worldPos;
+
+    worldPos.x = (gridPos.x - gridInfo.centerX) * TILE_SIZE + gridInfo.xOffset;
+    worldPos.y = (gridPos.y - gridInfo.centerY) * TILE_SIZE + gridInfo.yOffset;
+
+    return worldPos;
 }
 
 void RandomizeGrid(Grid &grid) {
@@ -19,6 +28,7 @@ void RandomizeGrid(Grid &grid) {
 
 void InitGameState(Game &game) {
   RandomizeGrid(game.grid);
+  InitGridInfo(game.gridInfo);
   game.cam.zoom = 1.0f;
 }
 
@@ -29,27 +39,27 @@ void DrawGrid(Grid &grid) {
   for (int x = 0; x <= ROW_TILE_COUNT; ++x) {
     int lineX = x * TILE_SIZE - offsetX;
     DrawLine(lineX, -offsetY, lineX, COL_TILE_COUNT * TILE_SIZE - offsetY,
-             GRAY);
+             BLACK);
   }
 
   for (int y = 0; y <= COL_TILE_COUNT; ++y) {
     int lineY = y * TILE_SIZE - offsetY;
     DrawLine(-offsetX, lineY, ROW_TILE_COUNT * TILE_SIZE - offsetX, lineY,
-             GRAY);
+             BLACK);
   }
 }
 
-void DrawGameWorld(const Grid& grid) {
+void DrawGameWorld(const Grid &grid, const GridInfo& gridInfo) {
   for (int y = 0; y < COL_TILE_COUNT; ++y) {
     for (int x = 0; x < ROW_TILE_COUNT; ++x) {
       TileType tileType = grid[y][x];
 
       Block block;
-      block.type = tileType; 
+      block.type = tileType;
 
       Vector2Int gridPos = {x, y};
 
-      DrawBlock(block, gridPos);
+      DrawBlock(block, gridPos, gridInfo);
     }
   }
 }

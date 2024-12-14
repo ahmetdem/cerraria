@@ -2,7 +2,6 @@
 #define UTIL_H
 
 #include "raylib.h"
-
 #include <random>
 
 struct Vector2Int {

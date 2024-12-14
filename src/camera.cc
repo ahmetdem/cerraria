@@ -41,17 +41,21 @@ void HandleCamLimit(Camera2D &cam) {
 void DrawCamDebug(Game &game) {
   Vector2 topLeft = (Vector2){10, 10};
 
-  // Display grid position on screen
   DrawTextEx(
       GetFontDefault(),
       TextFormat("Grid Position: [%i, %i]", game.gridPos.x, game.gridPos.y),
       Vector2Add(topLeft, (Vector2){10, 0}), 20, 2, DARKGREEN);
 
-  // Display world position
   DrawTextEx(GetFontDefault(),
              TextFormat("World Position: [%.2f, %.2f]", game.mouseWorldPos.x,
                         game.mouseWorldPos.y),
              Vector2Add(topLeft, (Vector2){10, 30}), 20, 2, BLACK);
+
+  Vector2 calcPos = GridToWorldPos(game.gridPos, game.gridInfo);
+  DrawTextEx(GetFontDefault(),
+             TextFormat("Calculated World Position: [%.2f, %.2f]", calcPos.x,
+                        calcPos.y),
+             Vector2Add(topLeft, (Vector2){10, 60}), 20, 2, BLACK);
 
   // Draw the mouse position marker
   DrawCircleV(GetMousePosition(), 4, DARKGRAY);
