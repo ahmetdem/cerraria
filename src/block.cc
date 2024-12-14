@@ -37,13 +37,17 @@ void UnloadAllTextures() {
 }
 
 void DrawBlock(const Block &block, const Vector2Int &gridPos,
-               const GridInfo &gridInfo) {
+               const GridInfo &gridInfo, const Camera2D &cam) {
+
+  Vector2 worldPos = gridInfo.precomputedWorldPositions[gridPos.x][gridPos.y];
+
+  if (!IsInsideVisibleCam(cam, worldPos))
+    return;
+
   Texture2D texture = GetTextureByType(block.type);
   if (texture.id == 0) {
     return;
   }
-
-  Vector2 worldPos = GridToWorldPos(gridPos, gridInfo);
 
   Rectangle sourceRect = {0, 0, (float)texture.width, (float)texture.height};
   Rectangle destRect = {(float)worldPos.x, (float)worldPos.y, (float)TILE_SIZE,

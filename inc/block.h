@@ -21,6 +21,7 @@ bool LoadTextures();
 Texture2D GetTextureByType(TileType type);
 void UnloadAllTextures();
 
-void DrawBlock(const Block &, const Vector2Int &, const GridInfo &gridInfo);
+void DrawBlock(const Block &, const Vector2Int &, const GridInfo &gridInfo,
+               const Camera2D &cam);
 
 #endif // BLOCK_H

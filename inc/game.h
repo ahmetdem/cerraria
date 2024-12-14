@@ -6,8 +6,8 @@
 #include "util.h"
 #include <array>
 
-#define GAME_WIDTH (100000 / 2)
-#define GAME_HEIGHT (50000 / 2)
+#define GAME_WIDTH (180000 / 2)
+#define GAME_HEIGHT (90000 / 2)
 
 #define TILE_SIZE 100
 
@@ -18,8 +18,10 @@ using std::array;
 using Grid = array<array<TileType, ROW_TILE_COUNT>, COL_TILE_COUNT>;
 
 struct GridInfo {
-    int centerX, centerY;
-    int xOffset, yOffset;
+  int centerX, centerY;
+  int xOffset, yOffset;
+
+  Vector2 precomputedWorldPositions[ROW_TILE_COUNT][COL_TILE_COUNT];
 };
 
 struct Game {
@@ -32,12 +34,14 @@ struct Game {
 };
 
 void InitGameState(Game &);
-void InitGridInfo(GridInfo &gridInfo);
+void InitGridInfo(GridInfo &);
+void InitWorldPositions(Vector2 precomputedWorldPositions[][COL_TILE_COUNT]);
 
 void RandomizeGrid(Grid &);
 void DrawGrid(Grid &);
-void DrawGameWorld(const Grid &, const GridInfo& gridInfo);
+void DrawGameWorld(const Grid &, const GridInfo &, const Camera2D &);
 
-Vector2 GridToWorldPos(const Vector2Int &, const GridInfo& gridInfo);
+Vector2 GridToWorldPos(const Vector2Int &, const GridInfo &);
+bool IsInsideVisibleCam(const Camera2D &, const Vector2 &);
 
 #endif // GAME_H

@@ -41,16 +41,19 @@ void HandleCamLimit(Camera2D &cam) {
 void DrawCamDebug(Game &game) {
   Vector2 topLeft = (Vector2){10, 10};
 
+  // Display Grid Position
   DrawTextEx(
       GetFontDefault(),
       TextFormat("Grid Position: [%i, %i]", game.gridPos.x, game.gridPos.y),
       Vector2Add(topLeft, (Vector2){10, 0}), 20, 2, DARKGREEN);
 
+  // Display World Position
   DrawTextEx(GetFontDefault(),
              TextFormat("World Position: [%.2f, %.2f]", game.mouseWorldPos.x,
                         game.mouseWorldPos.y),
              Vector2Add(topLeft, (Vector2){10, 30}), 20, 2, BLACK);
 
+  // Display Calculated World Position
   Vector2 calcPos = GridToWorldPos(game.gridPos, game.gridInfo);
   DrawTextEx(GetFontDefault(),
              TextFormat("Calculated World Position: [%.2f, %.2f]", calcPos.x,

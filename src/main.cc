@@ -15,7 +15,6 @@ int main(void) {
   SetTargetFPS(60);
 
   LoadTextures();
-
   srand(time(0));
 
   Game Game;
@@ -45,7 +44,7 @@ void RenderGame(Game &game) {
 
   BeginMode2D(game.cam); // Begin 2d Mode
 
-  DrawGameWorld(game.grid, game.gridInfo);
+  DrawGameWorld(game.grid, game.gridInfo, game.cam);
   DrawGrid(game.grid);
 
   DrawCircle(GetScreenWidth() / 2, GetScreenHeight() / 2, 50, MAROON);
