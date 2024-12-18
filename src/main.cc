@@ -12,7 +12,6 @@ void RenderGame(Game &);
 
 int main(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CERRARIA");
-  SetTargetFPS(60);
 
   LoadTextures();
   srand(time(0));
@@ -44,9 +43,8 @@ void RenderGame(Game &game) {
 
   BeginMode2D(game.cam); // Begin 2d Mode
 
-  DrawGameWorld(game.grid, game.gridInfo, game.cam);
-  DrawGrid(game.grid);
-
+  DrawGameWorld(game.chunks, game.gridInfo, game.cam);
+  DrawGrid();
   DrawCircle(GetScreenWidth() / 2, GetScreenHeight() / 2, 50, MAROON);
 
   EndMode2D(); // End 2d Mode

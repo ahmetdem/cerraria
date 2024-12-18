@@ -41,9 +41,6 @@ void DrawBlock(const Block &block, const Vector2Int &gridPos,
 
   Vector2 worldPos = gridInfo.precomputedWorldPositions[gridPos.x][gridPos.y];
 
-  if (!IsInsideVisibleCam(cam, worldPos))
-    return;
-
   Texture2D texture = GetTextureByType(block.type);
   if (texture.id == 0) {
     return;

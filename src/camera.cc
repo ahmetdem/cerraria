@@ -13,29 +13,30 @@ void HandleCamMove(Camera2D &cam) {
 void HandleCamZoom(Camera2D &cam) {
   float wheel = GetMouseWheelMove();
   if (wheel != 0) {
-    Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), cam);
-
-    cam.offset = GetMousePosition();
-    cam.target = mouseWorldPos;
-
     float scaleFactor = 1.0f + (0.25f * fabsf(wheel));
-
     if (wheel < 0)
       scaleFactor = 1.0f / scaleFactor;
 
-    cam.zoom = Clamp(cam.zoom * scaleFactor, 0.125f, 64.0f);
+    float newZoom = cam.zoom * scaleFactor;
+
+    if (newZoom >= 0.125f && newZoom <= 64.0f) {
+      Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), cam);
+
+      cam.offset = {static_cast<float>(GetScreenWidth() / 2),
+                    static_cast<float>(GetScreenHeight() / 2)};
+      cam.target = mouseWorldPos;
+
+      cam.zoom = newZoom;
+    }
   }
 }
 
 void HandleCamLimit(Camera2D &cam) {
-  float minX = -1 * ((float)GAME_WIDTH / 2.0f);
-  float minY = -1 * ((float)GAME_HEIGHT / 2.0f);
+  float halfWorldWidth = (float)GAME_WIDTH / 2.0f;
+  float halfWorldHeight = (float)GAME_HEIGHT / 2.0f;
 
-  float maxX = 1 * ((float)GAME_WIDTH / 2.0f);
-  float maxY = 1 * ((float)GAME_HEIGHT / 2.0f);
-
-  cam.target.x = Clamp(cam.target.x, minX, maxX);
-  cam.target.y = Clamp(cam.target.y, minY, maxY);
+  cam.target.x = Clamp(cam.target.x, -halfWorldWidth, halfWorldWidth);
+  cam.target.y = Clamp(cam.target.y, -halfWorldHeight, halfWorldHeight);
 }
 
 void DrawCamDebug(Game &game) {
@@ -60,21 +61,19 @@ void DrawCamDebug(Game &game) {
                         calcPos.y),
              Vector2Add(topLeft, (Vector2){10, 60}), 20, 2, BLACK);
 
-  // Draw the mouse position marker
+  Vector2Int chunkPos = WorldToChunkPos(game.mouseWorldPos);
+  DrawTextEx(GetFontDefault(),
+             TextFormat("Chunk Position: [%i, %i]", chunkPos.x,
+                        chunkPos.y),
+             Vector2Add(topLeft, (Vector2){10, 90}), 20, 2, BLACK);
+
+  // DrawCircleV(game.cam.offset, 10, YELLOW);
   DrawCircleV(GetMousePosition(), 4, DARKGRAY);
 }
 
 void UpdateMousePos(Game &game) {
   game.mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), game.cam);
-
-  game.gridPos.x =
-      static_cast<int>(std::floor(
-          (game.mouseWorldPos.x + (float)TILE_SIZE / 2) / TILE_SIZE)) +
-      ROW_TILE_COUNT / 2;
-
-  game.gridPos.y =
-      static_cast<int>(std::floor(game.mouseWorldPos.y / TILE_SIZE)) +
-      COL_TILE_COUNT / 2;
+  game.gridPos = WorldToGridPos(game.mouseWorldPos);
 
   if (game.mouseWorldPos.x < (float)-GAME_WIDTH / 2 ||
       game.mouseWorldPos.x > (float)GAME_WIDTH / 2 ||
