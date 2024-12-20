@@ -1,6 +1,8 @@
 #include "camera.h"
+#include "debug.h"
 #include "game.h"
 #include "raylib.h"
+#include "rlImGui.h"
 #include "rlgl.h"
 #include <ctime>
 
@@ -12,6 +14,9 @@ void RenderGame(Game &);
 
 int main(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CERRARIA");
+  rlImGuiSetup(false);
+
+  DEBUG_UI.Initialize();
 
   LoadTextures();
   srand(time(0));
@@ -26,15 +31,22 @@ int main(void) {
     RenderGame(Game);
   }
 
+  DEBUG_UI.Shutdown();
+
+  rlImGuiShutdown();
   UnloadAllTextures();
   CloseWindow();
   return 0;
 }
 
 void UpdateGame(Game &game) {
-  HandleCamMove(game.cam);
-  HandleCamZoom(game.cam);
-  HandleCamLimit(game.cam);
+  DEBUG_UI.Update(game);
+
+  if (!DEBUG_UI.GetState().camera.lockCamera) {
+    HandleCamMove(game.cam);
+    HandleCamZoom(game.cam);
+    HandleCamLimit(game.cam);
+  }
 }
 
 void RenderGame(Game &game) {
@@ -44,14 +56,18 @@ void RenderGame(Game &game) {
   BeginMode2D(game.cam); // Begin 2d Mode
 
   DrawGameWorld(game.chunks, game.gridInfo, game.cam);
-  DrawGrid();
-  DrawCircle(GetScreenWidth() / 2, GetScreenHeight() / 2, 50, MAROON);
+
+  DEBUG_UI.DrawGrid();
+  DEBUG_UI.DrawChunkGrid();
 
   EndMode2D(); // End 2d Mode
-
-  DrawFPS(SCREEN_WIDTH - 100, 20);
+  
+  DEBUG_UI.metrics.fps = GetFPS();
   UpdateMousePos(game);
-  DrawCamDebug(game);
+
+  rlImGuiBegin();
+  DEBUG_UI.Render(game);
+  rlImGuiEnd();
 
   EndDrawing();
 }

@@ -39,38 +39,6 @@ void HandleCamLimit(Camera2D &cam) {
   cam.target.y = Clamp(cam.target.y, -halfWorldHeight, halfWorldHeight);
 }
 
-void DrawCamDebug(Game &game) {
-  Vector2 topLeft = (Vector2){10, 10};
-
-  // Display Grid Position
-  DrawTextEx(
-      GetFontDefault(),
-      TextFormat("Grid Position: [%i, %i]", game.gridPos.x, game.gridPos.y),
-      Vector2Add(topLeft, (Vector2){10, 0}), 20, 2, DARKGREEN);
-
-  // Display World Position
-  DrawTextEx(GetFontDefault(),
-             TextFormat("World Position: [%.2f, %.2f]", game.mouseWorldPos.x,
-                        game.mouseWorldPos.y),
-             Vector2Add(topLeft, (Vector2){10, 30}), 20, 2, BLACK);
-
-  // Display Calculated World Position
-  Vector2 calcPos = GridToWorldPos(game.gridPos, game.gridInfo);
-  DrawTextEx(GetFontDefault(),
-             TextFormat("Calculated World Position: [%.2f, %.2f]", calcPos.x,
-                        calcPos.y),
-             Vector2Add(topLeft, (Vector2){10, 60}), 20, 2, BLACK);
-
-  Vector2Int chunkPos = WorldToChunkPos(game.mouseWorldPos);
-  DrawTextEx(GetFontDefault(),
-             TextFormat("Chunk Position: [%i, %i]", chunkPos.x,
-                        chunkPos.y),
-             Vector2Add(topLeft, (Vector2){10, 90}), 20, 2, BLACK);
-
-  // DrawCircleV(game.cam.offset, 10, YELLOW);
-  DrawCircleV(GetMousePosition(), 4, DARKGRAY);
-}
-
 void UpdateMousePos(Game &game) {
   game.mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), game.cam);
   game.gridPos = WorldToGridPos(game.mouseWorldPos);

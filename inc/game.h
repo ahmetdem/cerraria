@@ -48,7 +48,7 @@ void InitGridInfo(GridInfo &);
 void InitWorldPositions(Vector2 precomputedWorldPositions[][COL_TILE_COUNT]);
 
 void InitChunks(ChunkGrid &);
-void DrawGrid();
+
 void DrawGameWorld(const ChunkGrid &chunks, const GridInfo &gridInfo,
                    const Camera2D &cam);
 

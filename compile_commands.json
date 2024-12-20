@@ -7,12 +7,176 @@
       "-Wall",
       "-Iinc",
       "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
       "-o",
       "build/cerraria",
-      "src/ball.cc"
+      "src/block.cc"
     ],
     "directory": "/home/ahmetdem/Github/cerraria",
-    "file": "/home/ahmetdem/Github/cerraria/src/ball.cc",
+    "file": "/home/ahmetdem/Github/cerraria/src/block.cc",
     "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
   },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "src/camera.cc"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/src/camera.cc",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "src/game.cc"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/src/game.cc",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "src/main.cc"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/src/main.cc",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "deps/imgui/imgui.cpp"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/deps/imgui/imgui.cpp",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "deps/imgui/imgui_demo.cpp"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/deps/imgui/imgui_demo.cpp",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "deps/imgui/imgui_draw.cpp"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/deps/imgui/imgui_draw.cpp",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "deps/imgui/imgui_tables.cpp"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/deps/imgui/imgui_tables.cpp",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "deps/imgui/imgui_widgets.cpp"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/deps/imgui/imgui_widgets.cpp",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++23",
+      "-Wall",
+      "-Iinc",
+      "-Ideps/raylib/src",
+      "-Ideps/imgui",
+      "-Ideps/rlImGui",
+      "-o",
+      "build/cerraria",
+      "deps/rlImGui/rlImGui.cpp"
+    ],
+    "directory": "/home/ahmetdem/Github/cerraria",
+    "file": "/home/ahmetdem/Github/cerraria/deps/rlImGui/rlImGui.cpp",
+    "output": "/home/ahmetdem/Github/cerraria/build/cerraria"
+  }
 ]

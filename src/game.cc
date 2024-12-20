@@ -2,6 +2,7 @@
 #include "block.h"
 #include "raylib.h"
 #include "raymath.h"
+#include "debug.h"
 
 void InitGridInfo(GridInfo &gridInfo) {
   gridInfo.centerX = ROW_TILE_COUNT / 2;
@@ -31,11 +32,11 @@ Vector2 GridToWorldPos(const Vector2Int &gridPos, const GridInfo &gridInfo) {
 Vector2Int WorldToChunkPos(const Vector2 &worldPos) {
   Vector2Int pos, temp;
   temp = WorldToGridPos(worldPos);
-  
+
   // Clamp values between 0 and max chunk size
   pos.x = Clamp(temp.x / CHUNK_SIZE, 0, NUM_CHUNKS_X - 1);
   pos.y = Clamp(temp.y / CHUNK_SIZE, 0, NUM_CHUNKS_Y - 1);
-  
+
   return pos;
 }
 
@@ -74,32 +75,23 @@ void InitGameState(Game &game) {
   game.cam.zoom = 1.0f;
 }
 
-void DrawGrid() {
-  int offsetX = GAME_WIDTH / 2;
-  int offsetY = GAME_HEIGHT / 2;
-
-  for (int x = 0; x <= ROW_TILE_COUNT; ++x) {
-    int lineX = x * TILE_SIZE - offsetX;
-    DrawLine(lineX, -offsetY, lineX, COL_TILE_COUNT * TILE_SIZE - offsetY,
-             BLACK);
-  }
-
-  for (int y = 0; y <= COL_TILE_COUNT; ++y) {
-    int lineY = y * TILE_SIZE - offsetY;
-    DrawLine(-offsetX, lineY, ROW_TILE_COUNT * TILE_SIZE - offsetX, lineY,
-             BLACK);
-  }
-}
-
 void DrawGameWorld(const ChunkGrid &chunks, const GridInfo &gridInfo,
                    const Camera2D &cam) {
   int chunkXMin, chunkXMax, chunkYMin, chunkYMax;
   GetVisibleChunks(cam, chunkXMin, chunkXMax, chunkYMin, chunkYMax);
 
-  // Loop through visible chunks
+  int dirtyChunksCount = 0;
+  int visibleChunksCount = 0;
+
   for (int chunkY = chunkYMin; chunkY <= chunkYMax; ++chunkY) {
     for (int chunkX = chunkXMin; chunkX <= chunkXMax; ++chunkX) {
       const Chunk &chunk = chunks[chunkY][chunkX];
+      ++visibleChunksCount;
+
+      // Count dirty chunks
+      if (chunk.isDirty) {
+        ++dirtyChunksCount;
+      }
 
       for (int y = 0; y < CHUNK_SIZE; ++y) {
         for (int x = 0; x < CHUNK_SIZE; ++x) {
@@ -107,13 +99,17 @@ void DrawGameWorld(const ChunkGrid &chunks, const GridInfo &gridInfo,
                                 chunkY * CHUNK_SIZE + y};
           TileType tile = chunk.tiles[y][x];
 
-          if (IsInsideVisibleCam(cam, GridToWorldPos(gridPos, gridInfo))) {
+          Vector2 worldPos = GridToWorldPos(gridPos, gridInfo);
+          if (IsInsideVisibleCam(cam, worldPos)) {
             DrawBlock(tile, gridPos, gridInfo, cam);
           }
         }
       }
     }
   }
+
+  DEBUG_UI.metrics.dirtyChunksCount = dirtyChunksCount;
+  DEBUG_UI.metrics.visibleChunksCount = visibleChunksCount;
 }
 
 bool IsInsideVisibleCam(const Camera2D &cam, const Vector2 &blockWorldPos) {
