@@ -1,8 +1,10 @@
 #include "game.h"
 #include "block.h"
+#include "debug.h"
+#include "noise.h"
 #include "raylib.h"
 #include "raymath.h"
-#include "debug.h"
+#include "worldgen.h"
 
 void InitGridInfo(GridInfo &gridInfo) {
   gridInfo.centerX = ROW_TILE_COUNT / 2;
@@ -53,23 +55,18 @@ Vector2Int WorldToGridPos(const Vector2 &worldPos) {
   return pos;
 }
 
-void InitChunks(ChunkGrid &chunks) {
+void GenerateWorld(ChunkGrid &chunks, const WorldGenParams& params) {
+  init_noise(12345);
+
   for (int y = 0; y < NUM_CHUNKS_Y; ++y) {
     for (int x = 0; x < NUM_CHUNKS_X; ++x) {
-      Chunk &chunk = chunks[y][x];
-      chunk.isDirty = false;
-
-      for (int tileY = 0; tileY < CHUNK_SIZE; ++tileY) {
-        for (int tileX = 0; tileX < CHUNK_SIZE; ++tileX) {
-          chunk.tiles[tileY][tileX] = TILE_DIRT;
-        }
-      }
+      generate_chunk(&chunks[y][x], x, y, &params);
     }
   }
 }
 
 void InitGameState(Game &game) {
-  InitChunks(game.chunks);
+  GenerateWorld(game.chunks, game.worldGenParams);
   InitGridInfo(game.gridInfo);
 
   game.cam.zoom = 1.0f;

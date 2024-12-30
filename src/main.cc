@@ -61,7 +61,7 @@ void RenderGame(Game &game) {
   DEBUG_UI.DrawChunkGrid();
 
   EndMode2D(); // End 2d Mode
-  
+
   DEBUG_UI.metrics.fps = GetFPS();
   UpdateMousePos(game);
 

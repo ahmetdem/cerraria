@@ -4,13 +4,13 @@
 #include "block.h"
 #include "raylib.h"
 #include "util.h"
+#include "worldgen.h"
 #include <array>
 
 #define GAME_WIDTH (175000 / 2)
 #define GAME_HEIGHT (90000 / 2)
 
 #define TILE_SIZE 100
-#define CHUNK_SIZE 16
 
 #define ROW_TILE_COUNT (GAME_WIDTH / TILE_SIZE)
 #define COL_TILE_COUNT (GAME_HEIGHT / TILE_SIZE)
@@ -19,11 +19,6 @@
 #define NUM_CHUNKS_Y (COL_TILE_COUNT / CHUNK_SIZE)
 
 using std::array;
-
-struct Chunk {
-  TileType tiles[CHUNK_SIZE][CHUNK_SIZE];
-  bool isDirty;
-};
 
 using ChunkGrid = array<array<Chunk, NUM_CHUNKS_X>, NUM_CHUNKS_Y>;
 
@@ -41,13 +36,15 @@ struct Game {
   Camera2D cam = {};
   ChunkGrid chunks;
   GridInfo gridInfo;
+  WorldGenParams worldGenParams = {};
 };
 
 void InitGameState(Game &);
 void InitGridInfo(GridInfo &);
 void InitWorldPositions(Vector2 precomputedWorldPositions[][COL_TILE_COUNT]);
 
-void InitChunks(ChunkGrid &);
+void ChangeWorldSeed(uint32_t &);
+void GenerateWorld(ChunkGrid &, const WorldGenParams &);
 
 void DrawGameWorld(const ChunkGrid &chunks, const GridInfo &gridInfo,
                    const Camera2D &cam);

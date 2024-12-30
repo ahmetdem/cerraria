@@ -2,9 +2,6 @@
 #pragma once
 
 #include "game.h"
-#include "imgui.h"
-#include <string>
-#include <unordered_map>
 
 // Forward declarations
 struct Game;
@@ -100,6 +97,9 @@ private:
   void RenderChunkDebugWindow(Game &game);
   void RenderPerformanceWindow(Game &game);
   void RenderCameraDebugWindow(Camera2D &cam);
+
+  // Helper Methods
+  void ChangeWorldSeed(uint32_t &);
 
   DebugState state;
 };

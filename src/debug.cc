@@ -122,6 +122,34 @@ void DebugUI::RenderWorldDebugWindow(Game &game) {
     Vector2Int chunkPos = WorldToChunkPos(game.mouseWorldPos);
     ImGui::Text("Chunk Pos: %d, %d", chunkPos.x, chunkPos.y);
   }
+
+  if (ImGui::CollapsingHeader("World Generation Parameters")) {
+    ImGui::SliderInt("Surface Start", &game.worldGenParams.surface_start, 0,
+                     255, "%d");
+    ImGui::SliderFloat("Noise Scale", &game.worldGenParams.noise_scale, 0.0f,
+                       1.0f, "%.3f");
+    ImGui::SliderFloat("Height Variation",
+                       &game.worldGenParams.height_variation, 1.0f, 10.0f,
+                       "%.2f");
+    ImGui::SliderInt("Dirt Depth", &game.worldGenParams.dirt_depth, 0, 255,
+                     "%d");
+    ImGui::SliderInt("Min Ore Depth", &game.worldGenParams.min_ore_depth, 0,
+                     255, "%d");
+    ImGui::SliderInt("Max Veins", &game.worldGenParams.max_veins, 0, 10, "%d");
+
+    // Button to regenerate world with updated parameters
+    static WorldGenParams lastParams = game.worldGenParams;
+    if (memcmp(&lastParams, &game.worldGenParams, sizeof(WorldGenParams)) !=
+        0) {
+      GenerateWorld(game.chunks, game.worldGenParams);
+    }
+
+    if (ImGui::Button("Change Seed")) {
+      this->ChangeWorldSeed(game.worldGenParams.seed);
+
+      GenerateWorld(game.chunks, game.worldGenParams);
+    }
+  }
 }
 
 void DebugUI::RenderChunkDebugWindow(Game &game) {
@@ -210,4 +238,8 @@ void DebugUI::DrawChunkGrid() {
         Vector2{(float)(ROW_TILE_COUNT * TILE_SIZE - offsetX), (float)lineY},
         8.0f, state.rendering.chunkBorderColor);
   }
+}
+
+void DebugUI::ChangeWorldSeed(uint32_t &seed) {
+  seed = GetRandomValue(10000, 99999);
 }
